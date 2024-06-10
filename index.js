@@ -102,7 +102,7 @@ app.delete("/api/persons/:id", (request, response) => {
   response.status(204).end();
 });
 
-const PORT = 3001;
+const PORT = process.env.PORT || 3001;
 const HOST = "172.25.20.171";
 
 app.listen(PORT, HOST, () => {
