@@ -103,8 +103,7 @@ app.delete("/api/persons/:id", (request, response) => {
 });
 
 const PORT = process.env.PORT || 3001;
-const HOST = "172.25.20.171";
 
-app.listen(PORT, HOST, () => {
+app.listen(PORT, () => {
   console.log(`Listening to port ${PORT}`);
 });
