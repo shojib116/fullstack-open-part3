@@ -104,6 +104,13 @@ app.delete("/api/persons/:id", (request, response) => {
 
 const PORT = process.env.PORT || 3001;
 
-app.listen(PORT, () => {
-  console.log(`Listening to port ${PORT}`);
-});
+if (process.env.PORT) {
+  app.listen(PORT, () => {
+    console.log(`Listening to port ${PORT}`);
+  });
+} else {
+  const HOST = "172.25.20.171";
+  app.listen(PORT, HOST, () => {
+    console.log(`Listening to port ${PORT}`);
+  });
+}
