@@ -1,6 +1,7 @@
 const express = require("express");
 const morgan = require("morgan");
 const cors = require("cors");
+const Persons = require("./models/phonebook");
 
 const app = express();
 
@@ -49,7 +50,7 @@ app.get("/info", (request, response) => {
 });
 
 app.get("/api/persons/", (request, response) => {
-  response.json(persons);
+  Persons.find({}).then((persons) => response.json(persons));
 });
 
 app.get("/api/persons/:id", (request, response) => {
