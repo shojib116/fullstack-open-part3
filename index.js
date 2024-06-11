@@ -64,12 +64,6 @@ app.get("/api/persons/:id", (request, response) => {
   }
 });
 
-const generateID = () => {
-  const max = 9999999999;
-  const min = 1111111111;
-  return Math.round(Math.random() * (max - min) + min);
-};
-
 app.post("/api/persons/", (request, response) => {
   const body = request.body;
 
@@ -87,15 +81,12 @@ app.post("/api/persons/", (request, response) => {
   person.save().then((savedPerson) => response.json(savedPerson));
 });
 
-app.delete("/api/persons/:id", (request, response) => {
+app.delete("/api/persons/:id", (request, response, next) => {
   Persons.findByIdAndDelete(request.params.id)
     .then((result) => {
       response.status(204).end();
     })
-    .catch((error) => {
-      console.log(error);
-      response.status(400).end({ error: "invalid id" });
-    });
+    .catch((error) => next(error));
 });
 
 const unknownEndpoint = (request, response) => {
@@ -103,6 +94,18 @@ const unknownEndpoint = (request, response) => {
 };
 
 app.use(unknownEndpoint);
+
+const errorHandler = (error, request, response, next) => {
+  console.error(error.message);
+
+  if (error.name === "CastError") {
+    return response.status(400).send({ error: "malformatted id" });
+  }
+
+  next(error);
+};
+
+app.use(errorHandler);
 
 const PORT = process.env.PORT || 3001;
 
