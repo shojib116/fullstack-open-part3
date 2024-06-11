@@ -1,6 +1,7 @@
 const express = require("express");
 const morgan = require("morgan");
 const cors = require("cors");
+require("dotenv").config();
 const Persons = require("./models/phonebook");
 
 const app = express();
@@ -98,14 +99,14 @@ const errorHandler = (error, request, response, next) => {
 
 app.use(errorHandler);
 
-const PORT = process.env.PORT || 3001;
+const PORT = process.env.PORT;
 
-if (process.env.PORT) {
+if (!process.env.HOST) {
   app.listen(PORT, () => {
     console.log(`Listening to port ${PORT}`);
   });
 } else {
-  const HOST = "172.25.20.171";
+  const HOST = process.env.HOST;
   app.listen(PORT, HOST, () => {
     console.log(`Listening to port ${PORT}`);
   });
